@@ -132,7 +132,7 @@ public:
 private:
 
 	// Used to represent the size of the Hash Table, it is static so that it can be used later in other methods and that all instances of a Hash Table will have 50 spaces in them, const so that it cannot change during the programs execution, the s_ means that the variable is marked as static.
-	static const int s_TABLE_SIZE = 50;
+	static const size_t s_TABLE_SIZE = 50;
 
 	// Used to represent the capacity of the Hash Table (will be used to prevent the addition of elements beyond the size of the array).
 	size_t capacity = s_TABLE_SIZE;
