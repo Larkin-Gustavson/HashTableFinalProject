@@ -39,7 +39,7 @@ Homework::Homework() // default constructor
 
 // O(1) for this method (constructor)
 
-Homework::Homework(const string assignmentName, const string courseName, const int daysDue) // parameterized constructor
+Homework::Homework(const string& assignmentName, const string& courseName, const int& daysDue) // parameterized constructor
 	: assignmentName{ assignmentName }, courseName{ courseName }, daysDue{ daysDue }, next{ nullptr } // using the constructor initializer list to speed up program speed and the {} is used for narrowing, it will give a compiler warning if narrowing occurs (conversion of larger data type to a smaller data type)
 {
 }

@@ -58,7 +58,7 @@ struct Homework
 	Homework();
 
 	// Parameterized constructor.
-	Homework(const std::string assignmentName, const std::string courseName, const int daysDue);
+	Homework(const std::string& assignmentName, const std::string& courseName, const int& daysDue);
 };
 
 // Used to store the structure of the Hash Table (a sort of database that will hold multiple pieces of homework in it).
