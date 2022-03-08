@@ -18,8 +18,7 @@ using namespace std;
 
 	Collaborated with Chadayne Westney and Christian Gibbone.
 
-	Credit go to Dr. Zhao, for helping us with the constructors (for Homework and Hash Table),
-	destructor, add method, and displayHomework method.
+	Credit go to Dr. Zhao for the destructor implementation.
 
 	Another source of credit goes to Paul Programming for the implementation of the Hashing Function,
 	I (Larkin) got some minimal inspiration for the searchByDueDateAndAssignment and searchByCourseNameAndAssignment
