@@ -79,7 +79,7 @@ std::ostream& operator<<(std::ostream& output, const Homework& homework)
 
 std::ostream& operator<<(std::ostream& output, const Homework* homework)
 {
-	output << "Assignment Name = " << homework->assignmentName << ", Course Name = " << homework->courseName << " Day(s) due = " << homework->daysDue;
+	output << "Assignment Name = " << homework->assignmentName << ", Course Name = " << homework->courseName << ", Day(s) due = " << homework->daysDue;
 
 	return output;
 }
