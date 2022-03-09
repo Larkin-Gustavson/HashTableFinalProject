@@ -72,14 +72,14 @@ Homework* Homework::clearLinkedList(Homework* head) // a method to delete the el
 
 std::ostream& operator<<(std::ostream& output, const Homework& homework)
 {
-	output << "Assignment Name = " << homework.assignmentName << " Assigment Name = " << homework.assignmentName << " Day(s) due = " << homework.daysDue;
+	output << "Assignment Name = " << homework.assignmentName << ", Course Name = " << homework.courseName << ", Day(s) due = " << homework.daysDue;
 
 	return output;
 }
 
 std::ostream& operator<<(std::ostream& output, const Homework* homework)
 {
-	output << "Assignment Name = " << homework->assignmentName << " Course Name = " << homework->courseName << " Day(s) due = " << homework->daysDue;
+	output << "Assignment Name = " << homework->assignmentName << ", Course Name = " << homework->courseName << " Day(s) due = " << homework->daysDue;
 
 	return output;
 }
