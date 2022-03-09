@@ -70,6 +70,21 @@ Homework* Homework::clearLinkedList(Homework* head) // a method to delete the el
 	return clearLinkedList(currentIndex); // recursive call, using the new "shortened" list
 }
 
+std::ostream& operator<<(std::ostream& output, const Homework& homework)
+{
+	output << "Assignment Name = " << homework.assignmentName << " Assigment Name = " << homework.assignmentName << " Day(s) due = " << homework.daysDue;
+
+	return output;
+}
+
+std::ostream& operator<<(std::ostream& output, const Homework* homework)
+{
+	output << "Assignment Name = " << homework->assignmentName << " Course Name = " << homework->courseName << " Day(s) due = " << homework->daysDue;
+
+	return output;
+}
+
+
 /*
 * HashTable class member methods(hashFunction, add, printTable, remove, searchByDueDate,
 * searchByCourse, default constructor, destructor, etc.) defined here
@@ -409,13 +424,13 @@ void HashTable::printTable() const // method to print the contents of the Hash T
 // O(n), this is also assuming that there are no collisions or that there are not duplicate "primary keys" in the Hash Table
 // such as with the test data it only prints under the assignment name "Test 0", Course Name = Chemistry, and Day(s) Due = 0
 
-void HashTable::searchByAssignmentName(string assignmentName) const // method to search the Hash Table based on a specific "primary key"
+Homework* HashTable::searchByAssignmentName(string assignmentName) const // method to search the Hash Table based on a specific "primary key"
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
 		cout << "Error: The Hash Table is empty" << endl;
 
-		return;
+		return nullptr;
 	}
 
 	int index = hashFunction(assignmentName); // get the index of the buck to "look at"
@@ -428,20 +443,13 @@ void HashTable::searchByAssignmentName(string assignmentName) const // method to
 	{
 		if (currentIndex->assignmentName == assignmentName) // if the assignment name being looked at is the same provided by the user do the following
 		{
-			foundInformation = true; // mark the information as being found
-
-			cout << "Assignment Name = " << currentIndex->assignmentName << endl;
-			cout << "Course Name = " << currentIndex->courseName << endl;
-			cout << "Day(s) Due = " << currentIndex->daysDue << endl;
+			return currentIndex;
 		}
 
 		currentIndex = currentIndex->next; // move to the next position in the Hash Table
 	}
 
-	if (foundInformation == false) // if the information was never marked as being found, display the following method
-	{
-		cout << "The assignment " << assignmentName << " was not found in the Hash Table" << endl;
-	}
+	return nullptr;
 }
 
 // O(n^2) - assuming that in progress means assignments that are due today or tomorrow (0 = today or 1 = tomorrow)
@@ -515,13 +523,13 @@ void HashTable::clearBucket(const string assignmentName) // a method to remove t
 
 // O(n^2) for this method
 
-void HashTable::searchByDueDate(int dueDate) const // a method to search the Hash Table for all information that is associated with a due date
+Homework* HashTable::searchByDueDate(int dueDate) const // a method to search the Hash Table for all information that is associated with a due date
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
 		cout << "Error: The Hash Table is empty" << endl;
 
-		return;
+		return nullptr;
 	}
 
 	cout << "The Following Assignments are due: " << endl;
@@ -534,23 +542,24 @@ void HashTable::searchByDueDate(int dueDate) const // a method to search the Has
 		{
 			if (currentIndex->daysDue == dueDate) // if the due date stored in the current node, is the same as the one entered by the user
 			{
-				currentIndex->displayHomework(); // display the information that is in the current visited node
+				return currentIndex; // display the information that is in the current visited node
 			}
 
 			currentIndex = currentIndex->next; // if there isn't a match, move to the next node
 		}
 	}
+	return nullptr;
 }
 
 // O(n) for this method
 
-void HashTable::searchByDueDateAndAssignment(string assignmentName, int daysDue) const // a method to search the Hash Table for all information that is associated with an assignment and a specific due date, based on a primary key (assignmentName)
+Homework* HashTable::searchByDueDateAndAssignment(string assignmentName, int daysDue) const // a method to search the Hash Table for all information that is associated with an assignment and a specific due date, based on a primary key (assignmentName)
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
 		cout << "Error: The Hash Table is empty" << endl;
 
-		return;
+		return nullptr;
 	}
 
 	cout << "The Following information about " << assignmentName << " and with the due date of " << daysDue << " was found in the Hash Table:" << endl;
@@ -565,31 +574,24 @@ void HashTable::searchByDueDateAndAssignment(string assignmentName, int daysDue)
 	{
 		if (currentIndex->assignmentName == assignmentName && currentIndex->daysDue == daysDue) // if the assignment name in the current node and the courseName found is the same as the assignmentName and the courseName provided by the user, do the following
 		{
-			cout << "Assignment Name = " << currentIndex->assignmentName << endl; // display the assignmentName
-			cout << "Course Name = " << currentIndex->courseName << endl; // display the courseName
-			cout << "Day(s) Due = " << currentIndex->daysDue << endl; // display the daysDue
-
-			foundInformation = true; // since the information was found, mark it is as true
+			return currentIndex;
 		}
 
 		currentIndex = currentIndex->next; // if the information wasn't found, move to the next "node"
 	}
 
-	if (foundInformation == false) // if the information was never found, display this error message
-	{
-		cout << "The information for " << assignmentName << " and " << daysDue << " was not found in the Hash Table" << endl;
-	}
+	return nullptr;
 }
 
 // O(n^2) for this method
 
-void HashTable::searchByCourseName(string courseName) const // a method to search the Hash Table by the name of the course and retrieve its associated information
+Homework* HashTable::searchByCourseName(string courseName) const // a method to search the Hash Table by the name of the course and retrieve its associated information
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
 		cout << "Error: The Hash Table is empty" << endl;
 
-		return;
+		return nullptr;
 	}
 
 	cout << "\n\n" << "The Following information about " << courseName << " was found:" << endl;
@@ -602,23 +604,24 @@ void HashTable::searchByCourseName(string courseName) const // a method to searc
 		{
 			if (currentIndex->courseName == courseName) // if the course name stored in the current node, is the same as the one entered by the user
 			{
-				currentIndex->displayHomework(); // display the information that is in the current visited node
+				return currentIndex; // display the information that is in the current visited node
 			}
 
 			currentIndex = currentIndex->next; // if there isn't a match, move to the next node
 		}
 	}
+	return nullptr;
 }
 
 // O(n) for this method
 
-void HashTable::searchByCourseNameAndAssignment(string assignmentName, string courseName) const // a method to search the Hash Table by the name of the course and a unique primary key (assignmentName) and retrieve its associated information
+Homework* HashTable::searchByCourseNameAndAssignment(string assignmentName, string courseName) const // a method to search the Hash Table by the name of the course and a unique primary key (assignmentName) and retrieve its associated information
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
 		cout << "Error: The Hash Table is empty" << endl;
 
-		return;
+		return nullptr;
 	}
 
 	cout << "The Following information about " << assignmentName << " and " << courseName << " was found in the Hash Table:" << endl;
@@ -633,20 +636,13 @@ void HashTable::searchByCourseNameAndAssignment(string assignmentName, string co
 	{
 		if (currentIndex->assignmentName == assignmentName && currentIndex->courseName == courseName) // if the assignment name in the current node and the courseName found is the same as the assignmentName and the courseName provided by the user, do the following
 		{
-			cout << "Assignment Name = " << currentIndex->assignmentName << endl; // display the assignmentName
-			cout << "Course Name = " << currentIndex->courseName << endl; // display the courseName
-			cout << "Day(s) due = " << currentIndex->daysDue << endl; // display the daysDue
-
-			foundInformation = true; // since the information was found, mark it is as true
+			return currentIndex;
 		}
 
 		currentIndex = currentIndex->next; // if the information wasn't found, move to the next "node"
 	}
 
-	if (foundInformation == false) // if the information was never found in the Hash Table, display this error message
-	{
-		cout << "The information for " << assignmentName << " and " << courseName << " was not found in the Hash Table" << endl;
-	}
+	return nullptr;
 }
 
 // O(n) for this method
@@ -749,3 +745,4 @@ HashTable::~HashTable() // destructor, free up the memory used that is no longer
 		}
 	}
 }
+

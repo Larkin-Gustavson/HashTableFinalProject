@@ -59,6 +59,12 @@ struct Homework
 
 	// Parameterized constructor.
 	Homework(const std::string& assignmentName, const std::string& courseName, const int& daysDue);
+
+	// The overloaded stream insertion operator (to print the contents of a Homework struct), this will print the contents of a Homework struct (for non pointer Homework objects).
+	friend std::ostream& operator <<(std::ostream& output, const Homework& homework);
+
+	// The overloaded stream insertion operator (to print the contents of a Homework struct), this will print the contents of a Homework struct (for pointer Homework objects).
+	friend std::ostream& operator <<(std::ostream& output, const Homework* homework);
 };
 
 // Used to store the structure of the Hash Table (a sort of database that will hold multiple pieces of homework in it).
@@ -97,16 +103,16 @@ public:
 	void printTable() const;
 
 	// A method to search the Hash Table based on an assignments due date (daysDue) and retrieve all associated information with it.
-	void searchByDueDate(int daysDue) const;
+	Homework* searchByDueDate(int daysDue) const;
 
 	// A method search based on a assignment name and days due.
-	void searchByDueDateAndAssignment(std::string assignmentName, int daysDue) const;
+	Homework* searchByDueDateAndAssignment(std::string assignmentName, int daysDue) const;
 
 	// A method to search the Hash Table based on the course name (courseName) and retrieve all associated information with it.
-	void searchByCourseName(std::string courseName) const;
+	Homework* searchByCourseName(std::string courseName) const;
 
 	// A method search based on a assignment name and course name.
-	void searchByCourseNameAndAssignment(std::string assignmentName, std::string courseName) const;
+	Homework* searchByCourseNameAndAssignment(std::string assignmentName, std::string courseName) const;
 
 	// A method to clear a "row" or "bucket" from a Hash Table based on a key (assignment name).
 	void clearBucket(const std::string assignmentName);
@@ -121,7 +127,7 @@ public:
 	void assignmentsInProgress() const;
 
 	// A method to search the Hash Table based on a "primary key" working on the assumption that the "primary key" will only store one record.
-	void searchByAssignmentName(std::string assignmentName) const;
+	Homework* searchByAssignmentName(std::string assignmentName) const;
 
 	// Default constructor, to initialize the default state of the Hash Table.
 	HashTable();
