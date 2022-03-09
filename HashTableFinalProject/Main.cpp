@@ -33,7 +33,7 @@ int main()
 
 	// testing the getCapacity method
 
-	cout << "Initial Capacity = " << hashTable.getCapacity() << endl;
+	cout << "Initial Capacity = " << hashTable.getNumberOfEmptyBuckets() << endl;
 
 	/*
 		Intentionally causing a collision (two or more elements produce the same index,
@@ -70,7 +70,7 @@ int main()
 
 	// testing the getCapacity method
 
-	cout << "Capacity before removal = " << hashTable.getCapacity() << endl;
+	cout << "Capacity before removal = " << hashTable.getNumberOfEmptyBuckets() << endl;
 
 	// testing the getNumberOfEntries method
 
@@ -84,13 +84,13 @@ int main()
 
 	hashTable.remove("Test 100");
 
-	cout << "Capacity after removing a element(s) " << hashTable.getCapacity() << endl;
+	cout << "Number of empty buckets after removing a element(s) " << hashTable.getNumberOfEmptyBuckets() << endl;
 
 	cout << "Number of entries in the Table after removing a element(s) " << hashTable.getNumberOfEntries() << endl;
 
 	hashTable.printTable();
 
-	cout << "Capacity after adding elements " << hashTable.getCapacity() << endl;
+	cout << "Number of empty buckets after adding elements " << hashTable.getNumberOfEmptyBuckets() << endl;
 
 	// testing the clearBucket method
 
@@ -102,7 +102,7 @@ int main()
 
 	// testing the getCapacity method after a deleting an element
 
-	cout << "Capacity after removing a element " << hashTable.getCapacity() << endl;
+	cout << "Number of empty buckets after removing a element " << hashTable.getNumberOfEmptyBuckets() << endl;
 
 	// searching by the "primary key" (the assignment name)
 

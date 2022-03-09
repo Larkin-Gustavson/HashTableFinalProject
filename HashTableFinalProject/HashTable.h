@@ -84,8 +84,8 @@ public:
 	// A method to retrieve the numbers of items in a specific index in the Hash Table.
 	int numberOfItemsInIndex(const size_t index);
 
-	// A method to retrieve the current available capacity in the array that holds all of the buckets in the Hash Table (50 spots in the array, represented by the variable s_tableSize).
-	size_t getCapacity() const;
+	// A method to retrieve the current number of available buckets in the array that haven't had any elements added into them (50 spots in the array, represented by the variable s_TABLE_SIZE).
+	size_t getNumberOfEmptyBuckets() const;
 
 	// A method to see how many elements are in a certain position (based on a primary key of assignment name).
 	size_t sizeInBucket(const std::string assignmentName);
@@ -140,8 +140,8 @@ private:
 	// Used to represent the size of the Hash Table, it is static so that it can be used later in other methods and that all instances of a Hash Table will have 50 spaces in them, const so that it cannot change during the programs execution, the s_ means that the variable is marked as static.
 	static const size_t s_TABLE_SIZE = 50;
 
-	// Used to represent the capacity of the Hash Table (will be used to prevent the addition of elements beyond the size of the array).
-	size_t capacity = s_TABLE_SIZE;
+	// Used to represent the current number of available buckets in the array that haven't had any elements added into them (will be used to prevent the addition of elements beyond the size of the array).
+	size_t numberOfEmptyBuckets = s_TABLE_SIZE;
 
 	// Used to represent the number of entries in the Hash Table.
 	size_t numberOfEntries = 0;

@@ -272,7 +272,7 @@ int HashTable::numberOfItemsInIndex(const size_t index) // method to count how m
 
 // O(1) for this method
 
-size_t HashTable::getCapacity() const { return capacity; } // return the current capacity. A method to retrieve the current capacity in the Hash Table (how many empty buckets there are in the Hash Table)
+size_t HashTable::getNumberOfEmptyBuckets() const { return numberOfEmptyBuckets; } // return the current capacity. A method to retrieve the current capacity in the Hash Table (how many empty buckets there are in the Hash Table)
 
 // O(n) for this method
 
@@ -344,7 +344,7 @@ void HashTable::add(const string assignmentName, const string courseName, const 
 
 	Homework* currentIndex = hashingTable[index]; // set the current position to be whatever the calculated position is in the array. AKA the first element in that specific bucket (as indicated by the variable index)
 
-	if (capacity > 0) // if there is space in the underlying array to add an element, do the following
+	if (numberOfEmptyBuckets > 0) // if there is space in the underlying array to add an element, do the following
 	{
 		if (currentIndex == nullptr) // if there isn't an element in the linked list, add the information passed in by the user to the top of the bucket
 		{
@@ -354,7 +354,7 @@ void HashTable::add(const string assignmentName, const string courseName, const 
 
 			numberOfEntries++; // since a new entry has been made, increment the number of entries in the Hash Table by one
 
-			capacity--; // since an element has been added, the capacity of the Hash Table must be decreased
+			numberOfEmptyBuckets--; // since an element has been added, the capacity of the Hash Table must be decreased
 
 			outFile.close(); // close the file, to prevent errors
 		}
@@ -512,7 +512,7 @@ void HashTable::clearBucket(const string assignmentName) // a method to remove t
 
 		numberOfEntries = numberOfEntries - numberOfEntriesInBucket; // subtract the to be deleted number of entries in the bucket from the original amount of entries in the Hash Table, to get the actual number of buckets after the deleted buckets are moved
 
-		capacity++;
+		numberOfEmptyBuckets++;
 
 		hashingTable[index]->clearLinkedList(hashingTable[index]); // the desired location to be deleted, is the index calculated from the user (assignmentName)
 		hashingTable[index] = nullptr; // this was used, so that the deleted memory could be used at a later time for another hash value
