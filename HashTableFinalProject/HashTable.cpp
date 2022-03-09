@@ -70,14 +70,14 @@ Homework* Homework::clearLinkedList(Homework* head) // a method to delete the el
 	return clearLinkedList(currentIndex); // recursive call, using the new "shortened" list
 }
 
-ostream& operator<<(ostream& output, const Homework& homework)
+ostream& operator <<(ostream& output, const Homework& homework)
 {
 	output << "Assignment Name = " << homework.assignmentName << ", Course Name = " << homework.courseName << ", Day(s) due = " << homework.daysDue;
 
 	return output;
 }
 
-ostream& operator<<(ostream& output, const Homework* homework)
+ostream& operator <<(ostream& output, const Homework* homework)
 {
 	output << "Assignment Name = " << homework->assignmentName << ", Course Name = " << homework->courseName << ", Day(s) due = " << homework->daysDue;
 
