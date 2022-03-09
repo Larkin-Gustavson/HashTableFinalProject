@@ -84,7 +84,7 @@ int HashTable::hashFunction(string assignmentName) const // a method used to cre
 
 	int index; // used to store the index of the array or Hash Table
 
-	for (int i = 0; i < assignmentName.length(); i++) // for as long as the long as the string is
+	for (int i = 0; i < assignmentName.length(); i++) // for as long as the string (the key) is
 	{
 		hash = hash + (int)assignmentName[i] * 26; // get each character in the string, convert it to ASCII, then multiply it by 26 (to try to reduce the likelihood of collisions), and then add the previously calculated hash value
 	}
