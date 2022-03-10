@@ -33,7 +33,7 @@ int main()
 
 	// testing the getNumberOfEmptyBuckets method
 
-	cout << "Initial Capacity = " << hashTable.getNumberOfEmptyBuckets() << endl;
+	cout << "Initial number of empty buckets = " << hashTable.getNumberOfEmptyBuckets() << endl;
 
 	/*
 		Intentionally causing a collision (two or more elements produce the same index,
