@@ -31,7 +31,7 @@ int main()
 {
 	HashTable hashTable; // instantiating an object of class HashTable type, called hashTable
 
-	// testing the getCapacity method
+	// testing the getNumberOfEmptyBuckets method
 
 	cout << "Initial Capacity = " << hashTable.getNumberOfEmptyBuckets() << endl;
 
@@ -68,7 +68,7 @@ int main()
 	cout << endl;
 	cout << endl;
 
-	// testing the getCapacity method
+	// testing the getNumberOfEmptyBuckets method
 
 	cout << "Capacity before removal = " << hashTable.getNumberOfEmptyBuckets() << endl;
 
