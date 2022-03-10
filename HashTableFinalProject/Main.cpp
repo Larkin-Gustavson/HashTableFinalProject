@@ -70,7 +70,7 @@ int main()
 
 	// testing the getNumberOfEmptyBuckets method
 
-	cout << "Capacity before removal = " << hashTable.getNumberOfEmptyBuckets() << endl;
+	cout << "Number of empty buckets before removal = " << hashTable.getNumberOfEmptyBuckets() << endl;
 
 	// testing the getNumberOfEntries method
 
@@ -100,7 +100,7 @@ int main()
 
 	hashTable.printTable();
 
-	// testing the getCapacity method after a deleting an element
+	// testing the getNumberOfEmptyBuckets method after a deleting an element
 
 	cout << "Number of empty buckets after removing a element " << hashTable.getNumberOfEmptyBuckets() << endl;
 
