@@ -60,10 +60,10 @@ struct Homework
 	// Parameterized constructor.
 	Homework(const std::string& assignmentName, const std::string& courseName, const int& daysDue);
 
-	// The overloaded stream extraction operator (to print the contents of a Homework struct), this will print the contents of a Homework struct (for non pointer Homework objects).
+	// The overloaded stream insertion operator (to print the contents of a Homework struct), this will print the contents of a Homework struct (for non pointer Homework objects).
 	friend std::ostream& operator <<(std::ostream& output, const Homework& homework);
 
-	// The overloaded stream extraction operator (to print the contents of a Homework struct), this will print the contents of a Homework struct (for pointer Homework objects).
+	// The overloaded stream insertion operator (to print the contents of a Homework struct), this will print the contents of a Homework struct (for pointer Homework objects).
 	friend std::ostream& operator <<(std::ostream& output, const Homework* homework);
 };
 
