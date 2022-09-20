@@ -16,7 +16,7 @@
 					   the struct (Homework) Homework* clearLinkedList,
 					   default constructor, parameterized constructor,
 					   and void displayHomework. Within the class
-					   (HashTable)the key methods implemented are
+					   (HashTable) the key methods implemented are
 					   hashFunction, add, printTable, searchByDueDate,
 					   searchByDueDateAndAssignment, searchByCourseNameAndAssignment,
 					   assignmentsInProgress, searchByCourse, default constructor,
