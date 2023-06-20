@@ -40,7 +40,7 @@ Homework::Homework() // default constructor
 
 // O(1) for this method (constructor)
 
-Homework::Homework(const string& assignmentName, const string& courseName, const int& daysDue) // parameterized constructor
+Homework::Homework(const string& assignmentName, const string& courseName, const int daysDue) // parameterized constructor
 	: assignmentName{ assignmentName }, courseName{ courseName }, daysDue{ daysDue }, next{ nullptr } // using the constructor initializer list to speed up program speed and the {} is used for narrowing, it will give a compiler warning if narrowing occurs (conversion of larger data type to a smaller data type)
 {
 }
@@ -105,14 +105,14 @@ int HashTable::hashFunction(string assignmentName) const // a method used to cre
 		hash = hash + (int)assignmentName[i] * 26; // get each character in the string, convert it to ASCII, then multiply it by 26 (to try to reduce the likelihood of collisions), and then add the previously calculated hash value
 	}
 
-	index = hash % s_TABLE_SIZE; // get the previously calculated hash value and mod it by the table size
+	index = hash % TABLE_SIZE; // get the previously calculated hash value and mod it by the table size
 
 	return abs(index); // return the index (used to specify the spot in the array that the information will hold), we don't want negative indexes so we want to take the absolute value of the index (to guarantee a positive generated index)
 }
 
 // O(n) for this method
 
-void HashTable::remove(const string assignmentName) // a method to remove an element from the Hash Table (most of this method implementation was used from Paul Programming).
+void HashTable::remove(const string& assignmentName) // a method to remove an element from the Hash Table (most of this method implementation was used from Paul Programming).
 {
 	if (isEmpty()) // if the Hash Table is empty report this to the user
 	{
@@ -136,17 +136,17 @@ void HashTable::remove(const string assignmentName) // a method to remove an ele
 
 	Homework* trailingPtr; // this will represent the node behind the to be deleted node
 
-	if (hashingTable[index]->assignmentName == assignmentName && hashingTable[index]->next == nullptr) // if the element contains the desired assignment name and is the only element in the bucket do the following
+	if (table[index]->assignmentName == assignmentName && table[index]->next == nullptr) // if the element contains the desired assignment name and is the only element in the bucket do the following
 	{
 		clearBucket(assignmentName);
 
 		return;
 	}
 
-	else if (hashingTable[index]->assignmentName == assignmentName) // if the desired assignment name is found in the first item in the bucket, however there are more elements in the bucket, do the following
+	else if (table[index]->assignmentName == assignmentName) // if the desired assignment name is found in the first item in the bucket, however there are more elements in the bucket, do the following
 	{
-		deletedNode = hashingTable[index]; // set the to be deleted node equal to the index where the assignment name is found
-		hashingTable[index] = hashingTable[index]->next; // move to the second position in the bucket
+		deletedNode = table[index]; // set the to be deleted node equal to the index where the assignment name is found
+		table[index] = table[index]->next; // move to the second position in the bucket
 
 		delete deletedNode; // delete the first node in the bucket
 
@@ -158,9 +158,9 @@ void HashTable::remove(const string assignmentName) // a method to remove an ele
 	}
 
 	// if the bucket contains multiple items in the bucket, however the first item in the bucket does not contain the desired assignment name do the following
-	forwardPtr = hashingTable[index]->next; // move to the second position in the bucket
+	forwardPtr = table[index]->next; // move to the second position in the bucket
 
-	trailingPtr = hashingTable[index]; // make this point to the first position in the bucket
+	trailingPtr = table[index]; // make this point to the first position in the bucket
 
 	while (forwardPtr->assignmentName != assignmentName) // while we haven't found the correct assignment name, keep moving through the bucket (we know that the key does exist in the Hash Table because the keyExists method had to have returned true in order to hit this block of code)
 	{
@@ -188,11 +188,11 @@ void HashTable::remove(const string assignmentName) // a method to remove an ele
 
 // O(n) for this method
 
-bool HashTable::keyExists(string assignmentName) const // a method to see if a key exists in the Hash Table.
+bool HashTable::keyExists(const string& assignmentName) const // a method to see if a key exists in the Hash Table.
 {
 	int index = hashFunction(assignmentName); // get the position in the Hash Table
 
-	Homework* currentIndex = hashingTable[index]; // set the current position to be the
+	Homework* currentIndex = table[index]; // set the current position to be the
 
 	if (isEmpty()) // if it is empty return that the key does not exist (false)
 	{
@@ -214,7 +214,7 @@ bool HashTable::keyExists(string assignmentName) const // a method to see if a k
 
 // O(n) for this method
 
-void HashTable::printItemsInIndex(const size_t index)
+void HashTable::printItemsInIndex(const size_t index) const
 {
 	if (isEmpty()) // if the Hash Table is empty, report to the user the following message
 	{
@@ -223,9 +223,9 @@ void HashTable::printItemsInIndex(const size_t index)
 		return;
 	}
 
-	Homework* currentIndex = hashingTable[index]; // set the position in the array of buckets to be whatever was passed in by the user
+	Homework* currentIndex = table[index]; // set the position in the array of buckets to be whatever was passed in by the user
 
-	if (index < 0 || index > s_TABLE_SIZE) // if the index passed in is out of bounds of the array of buckets, report this error to the user
+	if (index < 0 || index > TABLE_SIZE) // if the index passed in is out of bounds of the array of buckets, report this error to the user
 	{
 		cout << index << " passed in is not with in the bounds of the Hash Table" << endl;
 
@@ -243,7 +243,7 @@ void HashTable::printItemsInIndex(const size_t index)
 
 // O(n) for this method
 
-int HashTable::numberOfItemsInIndex(const size_t index) // method to count how many items are in a specific bucket (index of the array)
+int HashTable::numberOfItemsInIndex(const size_t index) const // method to count how many items are in a specific bucket (index of the array)
 {
 	int itemCounter = 0; // used to count the number of entries in a specific position
 
@@ -252,9 +252,9 @@ int HashTable::numberOfItemsInIndex(const size_t index) // method to count how m
 		return itemCounter;
 	}
 
-	Homework* currentIndex = hashingTable[index]; // set the position in the array of buckets to be whatever was passed in by the user
+	Homework* currentIndex = table[index]; // set the position in the array of buckets to be whatever was passed in by the user
 
-	if (index < 0 || index > s_TABLE_SIZE) // if the index passed in is greater then the size of the array of buckets, report this error to the user
+	if (index < 0 || index > TABLE_SIZE) // if the index passed in is greater then the size of the array of buckets, report this error to the user
 	{
 		cout << index << " passed in is not with in the bounds of the Hash Table" << endl;
 
@@ -277,7 +277,7 @@ size_t HashTable::getNumberOfEmptyBuckets() const { return numberOfEmptyBuckets;
 
 // O(n) for this method
 
-size_t HashTable::sizeInBucket(const string assignmentName) // a method to count how many entries are made in the Hash Table at a certain bucket position (a primary key of an assignment name)
+size_t HashTable::sizeInBucket(const string& assignmentName) const // a method to count how many entries are made in the Hash Table at a certain bucket position (a primary key of an assignment name)
 {
 	if (isEmpty()) // if the Hash Table is empty, report that the Hash Table is empty and that the number of entries in this particular bucket is zero
 	{
@@ -288,7 +288,7 @@ size_t HashTable::sizeInBucket(const string assignmentName) // a method to count
 
 	int index = hashFunction(assignmentName); // get the index of the buck to "look at"
 
-	Homework* currentIndex = hashingTable[index]; // set the current position to be that index (the first item in the bucket at this position)
+	Homework* currentIndex = table[index]; // set the current position to be that index (the first item in the bucket at this position)
 
 	size_t numberOfEntries = 0; // this will represent the amount of entries found in this current bucket
 
@@ -335,7 +335,7 @@ size_t HashTable::getNumberOfEntries() const // method to retrieve the total num
 
 // O(n) for this method
 
-void HashTable::add(const string assignmentName, const string courseName, const int daysDue) // method to add information into the Hash Table
+void HashTable::add(const string& assignmentName, const string& courseName, const int daysDue) // method to add information into the Hash Table
 {
 	ofstream outFile; // creating the ability to write to a file
 
@@ -343,13 +343,13 @@ void HashTable::add(const string assignmentName, const string courseName, const 
 
 	int index = hashFunction(assignmentName); // get the index of the assignmentName (which will be used as the key)
 
-	Homework* currentIndex = hashingTable[index]; // set the current position to be whatever the calculated position is in the array. AKA the first element in that specific bucket (as indicated by the variable index)
+	Homework* currentIndex = table[index]; // set the current position to be whatever the calculated position is in the array. AKA the first element in that specific bucket (as indicated by the variable index)
 
 	if (numberOfEmptyBuckets > 0) // if there is space in the underlying array to add an element, do the following
 	{
 		if (currentIndex == nullptr) // if there isn't an element in the linked list, add the information passed in by the user to the top of the bucket
 		{
-			hashingTable[index] = new Homework(assignmentName, courseName, daysDue); // create a new HW entry with the passed in information from the user
+			table[index] = new Homework(assignmentName, courseName, daysDue); // create a new HW entry with the passed in information from the user
 
 			outFile << assignmentName << " " << courseName << " " << daysDue << endl; // write to the file, the following information
 
@@ -383,7 +383,7 @@ void HashTable::add(const string assignmentName, const string courseName, const 
 
 	else // if the capacity reaches the maximum allowed of if the user tries to add an element into the array that cannot be chained or that the capacity is reached, display the following message
 	{
-		cout << "Error: capacity of " << s_TABLE_SIZE << " has already been reached" << endl;
+		cout << "Error: capacity of " << TABLE_SIZE << " has already been reached" << endl;
 	}
 }
 
@@ -398,9 +398,9 @@ void HashTable::printTable() const // method to print the contents of the Hash T
 		return;
 	}
 
-	for (int i = 0; i < s_TABLE_SIZE; i++) // go until the max table size (50)
+	for (int i = 0; i < TABLE_SIZE; i++) // go until the max table size (50)
 	{
-		Homework* currentIndex = hashingTable[i]; // current represents the head
+		Homework* currentIndex = table[i]; // current represents the head
 
 		while (currentIndex != nullptr) // while there are elements in the linked list
 		{
@@ -425,7 +425,7 @@ void HashTable::printTable() const // method to print the contents of the Hash T
 // O(n), this is also assuming that there are no collisions or that there are not duplicate "primary keys" in the Hash Table
 // such as with the test data it only prints under the assignment name "Test 0", Course Name = Chemistry, and Day(s) Due = 0
 
-Homework* HashTable::searchByAssignmentName(string assignmentName) const // method to search the Hash Table based on a specific "primary key"
+Homework* HashTable::searchByAssignmentName(const string& assignmentName) const // method to search the Hash Table based on a specific "primary key"
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
@@ -436,9 +436,7 @@ Homework* HashTable::searchByAssignmentName(string assignmentName) const // meth
 
 	int index = hashFunction(assignmentName); // get the index of the buck to "look at"
 
-	Homework* currentIndex = hashingTable[index]; // set the current position to be that index (the first item in the bucket at this position)
-
-	bool foundInformation = false; // variable to flag if the information was found in the Hash Table
+	Homework* currentIndex = table[index]; // set the current position to be that index (the first item in the bucket at this position)
 
 	while (currentIndex != nullptr) // while we are not at the end of the Hash Table
 	{
@@ -466,9 +464,9 @@ void HashTable::assignmentsInProgress() const
 
 	cout << "The current assignment(s) due in 0 or 1 day(s) are the following:" << endl;
 
-	for (int i = 0; i < s_TABLE_SIZE; i++)
+	for (int i = 0; i < TABLE_SIZE; i++)
 	{
-		Homework* currentIndex = hashingTable[i]; // current represents the head of each linked list stored at each index of the Hash Table
+		Homework* currentIndex = table[i]; // current represents the head of each linked list stored at each index of the Hash Table
 
 		while (currentIndex != nullptr)
 		{
@@ -491,7 +489,7 @@ void HashTable::assignmentsInProgress() const
 
 // tail recursion used here (Part II), using the Tail Recursion Method from Part I
 
-void HashTable::clearBucket(const string assignmentName) // a method to remove the assignment name and its associated information from the Hash Table
+void HashTable::clearBucket(const string& assignmentName) // a method to remove the assignment name and its associated information from the Hash Table
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
@@ -502,7 +500,7 @@ void HashTable::clearBucket(const string assignmentName) // a method to remove t
 
 	int index = hashFunction(assignmentName); // get the index to where this information could be stored
 
-	if (hashingTable[index] == nullptr) // if the generated hash value is null, display this error message
+	if (table[index] == nullptr) // if the generated hash value is null, display this error message
 	{
 		cout << "The item cannot be deleted, it is not present in the Hash Table" << endl;
 	}
@@ -515,8 +513,8 @@ void HashTable::clearBucket(const string assignmentName) // a method to remove t
 
 		numberOfEmptyBuckets++;
 
-		hashingTable[index]->clearLinkedList(hashingTable[index]); // the desired location to be deleted, is the index calculated from the user (assignmentName)
-		hashingTable[index] = nullptr; // this was used, so that the deleted memory could be used at a later time for another hash value
+		table[index]->clearLinkedList(table[index]); // the desired location to be deleted, is the index calculated from the user (assignmentName)
+		table[index] = nullptr; // this was used, so that the deleted memory could be used at a later time for another hash value
 
 		cout << assignmentName << " was removed from the Hash Table" << endl;
 	}
@@ -535,9 +533,9 @@ Homework* HashTable::searchByDueDate(int dueDate) const // a method to search th
 
 	cout << "The Following Assignments are due: " << endl;
 
-	for (int i = 0; i < s_TABLE_SIZE; i++) // look through the entire Hash Table
+	for (int i = 0; i < TABLE_SIZE; i++) // look through the entire Hash Table
 	{
-		Homework* currentIndex = this->hashingTable[i]; // set the current node to be the beginning of the Hash Table
+		Homework* currentIndex = this->table[i]; // set the current node to be the beginning of the Hash Table
 
 		while (currentIndex != nullptr) // while we are not at the end of the Hash Table (also look at the linked lists to see if there were any colliding elements)
 		{
@@ -554,7 +552,7 @@ Homework* HashTable::searchByDueDate(int dueDate) const // a method to search th
 
 // O(n) for this method
 
-Homework* HashTable::searchByDueDateAndAssignment(string assignmentName, int daysDue) const // a method to search the Hash Table for all information that is associated with an assignment and a specific due date, based on a primary key (assignmentName)
+Homework* HashTable::searchByDueDateAndAssignment(const string& assignmentName, int daysDue) const // a method to search the Hash Table for all information that is associated with an assignment and a specific due date, based on a primary key (assignmentName)
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
@@ -567,9 +565,7 @@ Homework* HashTable::searchByDueDateAndAssignment(string assignmentName, int day
 
 	int index = hashFunction(assignmentName); // getting the index for which the assignmentName should be found in
 
-	Homework* currentIndex = hashingTable[index]; // setting the current "node" to be the size of the calculated Hash value of the key (assignmentName)
-
-	bool foundInformation = false; // used to signify if the information, based on the key (assignmentName) was found
+	Homework* currentIndex = table[index]; // setting the current "node" to be the size of the calculated Hash value of the key (assignmentName)
 
 	while (currentIndex != nullptr) // while we are not at the end of the Hash Table (including the linked list portions)
 	{
@@ -586,7 +582,7 @@ Homework* HashTable::searchByDueDateAndAssignment(string assignmentName, int day
 
 // O(n^2) for this method
 
-Homework* HashTable::searchByCourseName(string courseName) const // a method to search the Hash Table by the name of the course and retrieve its associated information
+Homework* HashTable::searchByCourseName(const string& courseName) const // a method to search the Hash Table by the name of the course and retrieve its associated information
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
@@ -597,9 +593,9 @@ Homework* HashTable::searchByCourseName(string courseName) const // a method to 
 
 	cout << "\n\n" << "The Following information about " << courseName << " was found:" << endl;
 
-	for (int i = 0; i < s_TABLE_SIZE; i++) // look through the entire Hash Table
+	for (int i = 0; i < TABLE_SIZE; i++) // look through the entire Hash Table
 	{
-		Homework* currentIndex = this->hashingTable[i]; // set the current node to be the beginning of the Hash Table
+		Homework* currentIndex = this->table[i]; // set the current node to be the beginning of the Hash Table
 
 		while (currentIndex != nullptr) // while we are not at the end of the Hash Table (also look at the linked lists to see if there were any colliding elements)
 		{
@@ -616,7 +612,7 @@ Homework* HashTable::searchByCourseName(string courseName) const // a method to 
 
 // O(n) for this method
 
-Homework* HashTable::searchByCourseNameAndAssignment(string assignmentName, string courseName) const // a method to search the Hash Table by the name of the course and a unique primary key (assignmentName) and retrieve its associated information
+Homework* HashTable::searchByCourseNameAndAssignment(const string& assignmentName, const string& courseName) const // a method to search the Hash Table by the name of the course and a unique primary key (assignmentName) and retrieve its associated information
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
@@ -629,9 +625,7 @@ Homework* HashTable::searchByCourseNameAndAssignment(string assignmentName, stri
 
 	int index = hashFunction(assignmentName); // getting the index for which the assignmentName should be found in
 
-	Homework* currentIndex = hashingTable[index]; // setting the current "node" to be the size of the calculated Hash value of the key (assignmentName)
-
-	bool foundInformation = false; // used to signify if the information, based on the key (assignmentName) was found
+	Homework* currentIndex = table[index]; // setting the current "node" to be the size of the calculated Hash value of the key (assignmentName)
 
 	while (currentIndex != nullptr) // while we are not at the end of the Hash Table (including the linked list portions)
 	{
@@ -648,7 +642,7 @@ Homework* HashTable::searchByCourseNameAndAssignment(string assignmentName, stri
 
 // O(n) for this method
 
-void HashTable::updateCourseName(const string assignmentName, const string oldCourseName, const string newCourseName) // method to update the information in a unique row (assignmentName), it will update the courseName
+void HashTable::updateCourseName(const string& assignmentName, const string& oldCourseName, const string& newCourseName) // method to update the information in a unique row (assignmentName), it will update the courseName
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
@@ -659,14 +653,14 @@ void HashTable::updateCourseName(const string assignmentName, const string oldCo
 
 	int index = hashFunction(assignmentName); // get the position of the Hash Table that will contain the assignmentName (as the key) and store the information
 
-	if (hashingTable[index]->assignmentName == assignmentName && hashingTable[index]->courseName == oldCourseName) // if the index stored in the Hash Table contains the same assignment name as the one passed in by the user and the course name stored in the same index is the same as the new course name passed in by the user, do the following
+	if (table[index]->assignmentName == assignmentName && table[index]->courseName == oldCourseName) // if the index stored in the Hash Table contains the same assignment name as the one passed in by the user and the course name stored in the same index is the same as the new course name passed in by the user, do the following
 	{
-		hashingTable[index]->courseName = newCourseName; // set the course name stored in the index to be the new course name passed in by the user
+		table[index]->courseName = newCourseName; // set the course name stored in the index to be the new course name passed in by the user
 	}
 
-	else if (hashingTable[index]->assignmentName != assignmentName) // this condition gets hit if there was a collision and the first element in the bucket in the Hash Table is not the entered in assignment name
+	else if (table[index]->assignmentName != assignmentName) // this condition gets hit if there was a collision and the first element in the bucket in the Hash Table is not the entered in assignment name
 	{
-		Homework* currentIndex = hashingTable[index]; // setting the current "node" to be the size of the calculated Hash value of the key (assignmentName)
+		Homework* currentIndex = table[index]; // setting the current "node" to be the size of the calculated Hash value of the key (assignmentName)
 
 		while (currentIndex != nullptr) // while we are not at the end of the bucket (or list), keep looping
 		{
@@ -687,7 +681,7 @@ void HashTable::updateCourseName(const string assignmentName, const string oldCo
 
 // O(n) for this method
 
-void HashTable::updateDaysDue(const string assignmentName, const int oldDaysDue, const int newDaysDue) // a method to update the daysDue value, with a given primary key (assignmentName) and a desired updated daysDue value
+void HashTable::updateDaysDue(const string& assignmentName, const int oldDaysDue, const int newDaysDue) // a method to update the daysDue value, with a given primary key (assignmentName) and a desired updated daysDue value
 {
 	if (isEmpty()) // if the Hash Table is empty, report it to the user
 	{
@@ -698,14 +692,14 @@ void HashTable::updateDaysDue(const string assignmentName, const int oldDaysDue,
 
 	int index = hashFunction(assignmentName); // generate a position of the Hash Table that could contain the primary key (assignmentName) and the daysDue value
 
-	if (hashingTable[index]->assignmentName == assignmentName && hashingTable[index]->daysDue == oldDaysDue) // if the assignmentName is the same (in the bucket) as the one passed in by the user and the daysDue value stored in the bucket, then do the following
+	if (table[index]->assignmentName == assignmentName && table[index]->daysDue == oldDaysDue) // if the assignmentName is the same (in the bucket) as the one passed in by the user and the daysDue value stored in the bucket, then do the following
 	{
-		hashingTable[index]->daysDue = newDaysDue; // set the daysDue to be assigned to the newDaysDue
+		table[index]->daysDue = newDaysDue; // set the daysDue to be assigned to the newDaysDue
 	}
 
-	else if (hashingTable[index]->assignmentName != assignmentName) // this condition gets hit if there was a collision and the first element in the bucket in the Hash Table is not the entered in assignment name
+	else if (table[index]->assignmentName != assignmentName) // this condition gets hit if there was a collision and the first element in the bucket in the Hash Table is not the entered in assignment name
 	{
-		Homework* currentIndex = hashingTable[index]; // setting the current "node" to be the size of the calculated Hash value of the key (assignmentName)
+		Homework* currentIndex = table[index]; // setting the current "node" to be the size of the calculated Hash value of the key (assignmentName)
 
 		while (currentIndex != nullptr) // while we are not at the end of the bucket (or list), keep looping
 		{
@@ -728,9 +722,9 @@ void HashTable::updateDaysDue(const string assignmentName, const int oldDaysDue,
 
 HashTable::HashTable() // default constructor
 {
-	for (int i = 0; i < s_TABLE_SIZE; i++)
+	for (int i = 0; i < TABLE_SIZE; i++)
 	{
-		hashingTable[i] = nullptr; // initialize each position in the array (the Hash Table) to be null
+		table[i] = nullptr; // initialize each position in the array (the Hash Table) to be null
 	}
 }
 
@@ -738,12 +732,11 @@ HashTable::HashTable() // default constructor
 
 HashTable::~HashTable() // destructor, free up the memory used that is no longer needed
 {
-	for (int i = 0; i < s_TABLE_SIZE; i++)
+	for (int i = 0; i < TABLE_SIZE; i++)
 	{
-		for (int j = 0; i < s_TABLE_SIZE; i++)
+		for (int j = 0; i < TABLE_SIZE; i++)
 		{
-			delete hashingTable[i];
+			delete table[i];
 		}
 	}
 }
-

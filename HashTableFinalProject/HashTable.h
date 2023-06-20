@@ -58,7 +58,7 @@ struct Homework
 	Homework();
 
 	// Parameterized constructor.
-	Homework(const std::string& assignmentName, const std::string& courseName, const int& daysDue);
+	Homework(const std::string& assignmentName, const std::string& courseName, const int daysDue);
 
 	// The overloaded stream insertion operator (to print the contents of a Homework struct), for non pointer Homework objects.
 	friend std::ostream& operator <<(std::ostream& output, const Homework& homework);
@@ -73,22 +73,22 @@ class HashTable
 public:
 
 	// A method to remove an element based on a assignment name from the Hash Table.
-	void remove(const std::string assignmentName);
+	void remove(const std::string& assignmentName);
 
 	// A method to see if a key exists in the Hash Table.
-	bool keyExists(std::string assignmentName) const;
+	bool keyExists(const std::string& assignmentName) const;
 
 	// A method to print the contents of a bucket in the Hash Table.
-	void printItemsInIndex(const size_t index);
+	void printItemsInIndex(const size_t index) const;
 
 	// A method to retrieve the numbers of items in a specific index in the Hash Table.
-	int numberOfItemsInIndex(const size_t index);
+	int numberOfItemsInIndex(const size_t index) const;
 
 	// A method to retrieve the current number of available buckets in the array that haven't had any elements added into them (50 spots in the array, represented by the variable s_TABLE_SIZE).
 	size_t getNumberOfEmptyBuckets() const;
 
 	// A method to see how many elements are in a certain position (based on a primary key of assignment name).
-	size_t sizeInBucket(const std::string assignmentName);
+	size_t sizeInBucket(const std::string& assignmentName) const;
 
 	// A method to see if a Hash Table is empty (there are no entries made in the Hash Table).
 	bool isEmpty() const;
@@ -97,7 +97,7 @@ public:
 	size_t getNumberOfEntries() const;
 
 	// A method to add data based on a ideally unique key (the assignment name), it will add the assignment name, course name, and days due as "records" or rows in the Hash Table. It will also record this information into a "Assignments.txt" text file.
-	void add(const std::string assignmentName, const std::string courseName, const int daysDue);
+	void add(const std::string& assignmentName, const std::string& courseName, const int daysDue);
 
 	// A method to print the "rows" of data in the Hash Table.
 	void printTable() const;
@@ -106,28 +106,28 @@ public:
 	Homework* searchByDueDate(int daysDue) const;
 
 	// A method search based on a assignment name and days due.
-	Homework* searchByDueDateAndAssignment(std::string assignmentName, int daysDue) const;
+	Homework* searchByDueDateAndAssignment(const std::string& assignmentName, int daysDue) const;
 
 	// A method to search the Hash Table based on the course name (courseName) and retrieve all associated information with it.
-	Homework* searchByCourseName(std::string courseName) const;
+	Homework* searchByCourseName(const std::string& courseName) const;
 
 	// A method search based on a assignment name and course name.
-	Homework* searchByCourseNameAndAssignment(std::string assignmentName, std::string courseName) const;
+	Homework* searchByCourseNameAndAssignment(const std::string& assignmentName, const std::string& courseName) const;
 
 	// A method to clear a "row" or "bucket" from a Hash Table based on a key (assignment name).
-	void clearBucket(const std::string assignmentName);
+	void clearBucket(const std::string& assignmentName);
 
 	// A method to update the course name.
-	void updateCourseName(const std::string assignmentName, const std::string oldCourseName, const std::string newCourseName);
+	void updateCourseName(const std::string& assignmentName, const std::string& oldCourseName, const std::string& newCourseName);
 
 	// A method to update the day(s) due.
-	void updateDaysDue(const std::string assignmentName, const int oldDaysDue, const int newDaysDue);
+	void updateDaysDue(const std::string& assignmentName, const int oldDaysDue, const int newDaysDue);
 
 	// A method display the assignments that have either a due date of 0 or 1.
 	void assignmentsInProgress() const;
 
 	// A method to search the Hash Table based on a "primary key" working on the assumption that the "primary key" will only store one record.
-	Homework* searchByAssignmentName(std::string assignmentName) const;
+	Homework* searchByAssignmentName(const std::string& assignmentName) const;
 
 	// Default constructor, to initialize the default state of the Hash Table.
 	HashTable();
@@ -138,16 +138,16 @@ public:
 private:
 
 	// Used to represent the size of the Hash Table, it is static so that it can be used later in other methods and that all instances of a Hash Table will have 50 spaces in them, const so that it cannot change during the programs execution, the s_ means that the variable is marked as static.
-	static const size_t s_TABLE_SIZE = 50;
+	static const size_t TABLE_SIZE = 50;
 
 	// Used to represent the current number of available buckets in the array that haven't had any elements added into them (will be used to prevent the addition of elements beyond the size of the array).
-	size_t numberOfEmptyBuckets = s_TABLE_SIZE;
+	size_t numberOfEmptyBuckets = TABLE_SIZE;
 
 	// Used to represent the number of entries in the Hash Table.
 	size_t numberOfEntries = 0;
 
 	// This will represent the Hash Table itself. Comprised of a "unique key" (assignmentName), a courseName, and a daysDue (if necessary due to collisions, it will store linked lists to hold the values that collided). Each index in this array represents a "bucket" that may contain one or more entries in each bucket.
-	Homework* hashingTable[s_TABLE_SIZE];
+	Homework* table[TABLE_SIZE];
 
 	// A method to "hash" an assignment name, which will act as the "primary key" for the Hash Table. It will ideally create a unique index, based on a key it is supplied. For security measures this method should be marked as private.
 	int hashFunction(std::string assignmentName) const;
